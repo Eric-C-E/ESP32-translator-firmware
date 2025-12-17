@@ -1,0 +1,38 @@
+### DISPLAY ARCH ###
+
+Can use single SPI channel and the chip select to control.
+Currently: CS connected to CS0. Connect one to CS0, one to CS1.
+
+### ESP-IDF build system notes ###
+
+net_task: connect to AP, maintain UDP, TCP, parse messages and push to queues, and packages outgoing messages incl. button state and audio chunks
+
+ui_task: runs LVGL and tick handler, receives new text for disp1, disp2 via queue, triggers invalidation and flush. Can re-use Jetson code for this up to the send to screen - send to DMA bounce buffer instead, then trigger DMA SPI transfer.
+
+audio_task: I2S mic, fill ringbuffer with PCM chunks, send chunks to net_task via queue.
+
+io_task: monitor the 2 GPIO pins with debounce. Publish events BTN1_HIGH, BTN2_HIGH. (Buttons for Active Lang1, Active Lang2)
+
+### Intertask Comms ###
+
+Queues: 
+TEXT_DISP1_UPDATE
+
+TEXT_DISP2_UPDATE
+
+
+
+### Audio Stream Out ###
+
+Stop sending audio when button un-pressed
+
+16 kHz PCM chunks with header:
+
+{magic, msg_type, payload_len, seq, timestamp}
+
+Assembler on Jetson side will take chunks into PCM stream in RAM. Logic wil run a moving window method on this stream.
+
+On BUTTON_DOWN(btn_id)
+while button not up:
+stream AUDIO_CHUNK(seq, ts, pcm)
+ON BUTTON_UP(btn_id) this sends a TCP message to stop receiving audio to the buffer. 
