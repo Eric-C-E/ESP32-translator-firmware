@@ -36,3 +36,10 @@ On BUTTON_DOWN(btn_id)
 while button not up:
 stream AUDIO_CHUNK(seq, ts, pcm)
 ON BUTTON_UP(btn_id) this sends a TCP message to stop receiving audio to the buffer. 
+
+### Text stream in ###
+
+Interface will work same way as audio out, where we will have a header with {magic, msg_type, payload_len, seq, timestamp}
+
+The message type may be to select a screen for the particular packet's destination.
+

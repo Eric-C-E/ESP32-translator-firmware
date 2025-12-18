@@ -1,0 +1,12 @@
+idf_component_register(
+    SRCS
+        "app_main.c"
+        "translator_audio.c"
+        "translator_io.c"
+        "translator_net.c"
+        "translator_proto.c"
+        "translator_runtime.c"
+        "translator_ui.c"
+    INCLUDE_DIRS
+        "."
+)

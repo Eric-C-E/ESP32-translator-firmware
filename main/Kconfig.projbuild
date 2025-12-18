@@ -1,0 +1,65 @@
+menu "Translator firmware"
+
+    config TRANSLATOR_WIFI_SSID
+        string "WiFi SSID"
+        default "jetson-ap"
+        help
+            SSID of the Jetson AP.
+
+    config TRANSLATOR_WIFI_PASSWORD
+        string "WiFi password"
+        default "password"
+        help
+            Password for the Jetson AP.
+
+    config TRANSLATOR_JETSON_HOST
+        string "Jetson host/IP for TCP"
+        default "192.168.4.1"
+        help
+            TCP server address on the Jetson.
+
+    config TRANSLATOR_JETSON_TCP_PORT
+        int "Jetson TCP port"
+        default 9000
+        range 1 65535
+
+    config TRANSLATOR_TCP_RX_BUF
+        int "TCP RX buffer (bytes)"
+        default 1024
+        range 256 8192
+
+    config TRANSLATOR_TEXT_MAX_BYTES
+        int "Max text bytes per update"
+        default 256
+        range 64 2048
+        help
+            Max UTF-8 bytes copied into the UI queue per message.
+
+    config TRANSLATOR_AUDIO_CHUNK_BYTES
+        int "Audio chunk bytes"
+        default 640
+        range 64 4096
+        help
+            Payload bytes per audio frame (e.g. 20ms @ 16kHz mono s16 = 640 bytes).
+
+    config TRANSLATOR_BUTTON1_GPIO
+        int "Button 1 GPIO (Active Lang 1)"
+        default 0
+        range 0 48
+
+    config TRANSLATOR_BUTTON2_GPIO
+        int "Button 2 GPIO (Active Lang 2)"
+        default 1
+        range 0 48
+
+    config TRANSLATOR_ENABLE_SYNTH_AUDIO
+        bool "Enable synthetic audio source"
+        default y
+        help
+            Generates silence chunks when a button is held; replace with I2S later.
+
+    config TRANSLATOR_LOG_NET_FRAMES
+        bool "Log inbound/outbound frames (debug)"
+        default n
+
+endmenu
