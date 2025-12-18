@@ -1,0 +1,17 @@
+Priority: Medium
+
+GPIO Task:
+- LVGL graphics rendering
+- UI Framebuffer Update
+- Use [https://github.com/lvgl/lv_port_esp32]
+- Use [https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/peripherals/lcd/index.html]
+- esp_lcd and lvgl_port. 
+- Run two LVGL displays
+- SPI DMA needs buffers in SRAM. PSRAM not good. 
+- Keep LVGL draw buffers small and in internal RAM.
+- esp_lcd might bounce buffer
+- Partial Buffer SRAM
+
+Connects to:
+[[TEXT DOWNLINK TASK]]
+with Queue

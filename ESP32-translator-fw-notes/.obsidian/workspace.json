@@ -1,0 +1,224 @@
+{
+  "main": {
+    "id": "bca3c7004bb0d1c5",
+    "type": "split",
+    "children": [
+      {
+        "id": "619c56c21c043cb1",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "0d27d493067ace9f",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "GRAPHICS TASK.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "GRAPHICS TASK"
+            }
+          },
+          {
+            "id": "85acae1c136ccfe5",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "AUDIO CAPTURE TASK.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "AUDIO CAPTURE TASK"
+            }
+          },
+          {
+            "id": "73b2baaa91f610bd",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "TEXT DOWNLINK TASK.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "TEXT DOWNLINK TASK"
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "e785c2692f906f32",
+    "type": "split",
+    "children": [
+      {
+        "id": "189505fddf6d4f23",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "3ca9f7787f1dfd49",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "f1974566f81824d1",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "1775f0196a114ef3",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "f777002fcfcbd773",
+    "type": "split",
+    "children": [
+      {
+        "id": "882dfaec3cbd1dc0",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "6570ee6a0354c4ed",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "AUDIO CAPTURE TASK.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for AUDIO CAPTURE TASK"
+            }
+          },
+          {
+            "id": "64523829c53dcb91",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "AUDIO CAPTURE TASK.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from AUDIO CAPTURE TASK"
+            }
+          },
+          {
+            "id": "5b6d44d835c6e243",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "c7a8af229d853536",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "d5e2a04f356f2557",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "AUDIO CAPTURE TASK.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of AUDIO CAPTURE TASK"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "85acae1c136ccfe5",
+  "lastOpenFiles": [
+    "AUDIO UPLINK TASK.md",
+    "AUDIO CAPTURE TASK.md",
+    "GPIO TASK.md",
+    "GRAPHICS TASK.md",
+    "TEXT DOWNLINK TASK.md",
+    "Interface.md"
+  ]
+}
