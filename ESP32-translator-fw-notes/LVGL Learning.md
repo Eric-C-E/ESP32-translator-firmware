@@ -120,16 +120,389 @@ and 2. lcd_esp and lcd_esp_gc9a01 functionality
 
 Included dependencies for lvgl and lvgl_esp_port
 
+Standard Includes: 
+
+```C
+#include "esp_err.h"
+#include "esp_log.h"
+#include "esp_check.h"
+#include "driver/i2c_master.h"
+#include "driver/gpio.h"
+#include "driver/spi_master.h"
+#include "esp_lcd_panel_io.h"
+#include "esp_lcd_panel_vendor.h"
+#include "esp_lcd_panel_ops.h"
+#include "esp_lvgl_port.h"
+#include "esp_lcd_gc9a01.h"
+
+```
+
+**Using LVGL_PORT, the glue layer**
+
+[lvgl_port](https://github.com/espressif/esp-bsp/tree/d15cf39696339b128eceb75665d806d8bd10959a/components/esp_lvgl_port)
+
+lvgl port takes care of 
+- initializing lvgl
+- adding and removing displays
+- adding and removing touch
+- buttons
+- encoders
+- keyboard and mouse bindings
+
+General workflow is to add screen to lvgl
+
+`static lv_disp_t * disp handle`
+
+`esp_lcd_panel_io_handle_t io_handle = NULL;` standard lcd driver init
+call `ESP_ERROR_CHECK(esp_lcd_new_panel_io_spi((esp_lcd_spi_bus_handle_t) 1, &ioconfig, &io_h)`
+
+`esp_lcd_panel_handle_t lcd_panel_handle;`
+
+`ESP_ERROR_CHECK(esp_lcd_new_panel_gc9a01(io_handle, &panel_config, &lcd_panel_handle));`
+
+add the LCD screen
+
+const lvgl_port_display_cfg_t disp_cfg = { set a bunch of stuff}
+
+`disp_handle = lvgl_port_add_disp(&disp_cfg)`
+
+Makes the screen handle.
+
+And more initialization steps following.
+
+When removing displays, use 
+`lvgl_port_remove_disp(disp_handle)`
+
+LVGL calls must be protected with lock/unlock commands
+
+```C
+lvgl_port_lock(0);
+...
+lv_obj_t * screen = lv_disp_get_scr_act(disp_handle);
+lv_obj_t *obj = lv_label_screate(screen);
+....
+lvgl_port_unlock();
+```
+
+if SRAM insufficient, PSRAM used as a canvas a using a small transbuffer to carry it.
+However, LVGL is supposedly capable of chunking using 1/10th the SRAM, which means ESP32 has more than enough.
+
+Making images into transferable format:
+
+```C
+lvgl_port_create_c_image("images/logo.png" "images/" "RGB565" "NONE")
+lvgl_port_create_c_image("images/image.png" "images/" "RGB565" "NONE")
+# Add Generated Images to build
+lvgl_port_add_images(${COMPONENT_LIB} "images/")
+```
+With formats:
+L8,I1,I2,I4,I8,A1,A2,A4,A8,ARGB8888,XRGB8888,RGB565,RGB565A8,RGB888,TRUECOLOR,TRUECOLOR_ALPHA,AUTO
+
+**Using LVGL**
+
+LVGL still must be used. LVGL Port is just glue to make LVGL work very well with ESP-IDF.
+
+LVGL_PORT handles the ESP specific functions, like DMA buffers, inputs, and locking.
+
+you can use LVGL **REMEMBER TO LOCK**
+
+```C
+lv_obj_t *label = lv_label_create(lv_scr_act());
+lv_label_set_text(label, "Hello");
+```
+
+LVGL will render into buffer and the port flushes the buffer via esp_lcd.
+
+esp_lcd_panel_draw_bitmap() is now never called by user.
+
+lvgl_port may do some optimization in background.
+
+If you must do something with the screen that is not LVGL, you can lock LVGL and write directly with your own drivers using draw_bitmap().
+
+Mostly taken from example at: [example program by espressif](https://github.com/espressif/esp-bsp/blob/d15cf39696339b128eceb75665d806d8bd10959a/components/esp_lvgl_port/test_apps/lvgl_port/main/test.c)
+
+define lcd size
+define spi parameters and other params
+define io pins
+
+(optional) define touch settings
+(optional) define lcd touch pins
+
+`static char *TAG = "whatever you want"`
+
+make esp_lcd handles
+
+```c
+/* LCD IO and panel */
+static esp_lcd_panel_io_handle_t lcd_io = NULL;
+static esp_lcd_panel_handle_t lcd_panel = NULL;
+static esp_lcd_panel_io_handle_t tp_io_handle = NULL;
+static esp_lcd_touch_handle_t touch_handle = NULL;
+
+/* LVGL display and touch */
+static lv_display_t *lvgl_disp = NULL;
+static lv_indev_t *lvgl_touch_indev = NULL;
+static i2c_master_bus_handle_t i2c_handle = NULL;
+```
+
+make a vendor specific init chain if you need. For GC9A01 this is in the esp_lcd_gc9a01.
+
+set buscfg
+
+init bus
+
+set io_config
+
+initialize esp_lcd new panel
+
+install lcd driver 
+
+by initializing the display (esp_lcd_gc9a01)
+
+set panel reset, init, mirror, disp_on_off
+
+(optional) backlight
+
+free spi bus if needed
+
+```c
+static esp_err_t app_lcd_deinit(void)
+{
+    ESP_RETURN_ON_ERROR(esp_lcd_panel_del(lcd_panel), TAG, "LCD panel deinit failed");
+    ESP_RETURN_ON_ERROR(esp_lcd_panel_io_del(lcd_io), TAG, "LCD IO deinit failed");
+    ESP_RETURN_ON_ERROR(spi_bus_free(EXAMPLE_LCD_SPI_NUM), TAG, "SPI BUS free failed");
+    ESP_RETURN_ON_ERROR(gpio_reset_pin(EXAMPLE_LCD_GPIO_BL), TAG, "Reset BL pin failed");
+    return ESP_OK;
+}
+```
+
+init lvgl
+
+```c
+static esp_err_t app_lvgl_init(void)
+{
+    /* Initialize LVGL */
+    const lvgl_port_cfg_t lvgl_cfg = ESP_LVGL_PORT_INIT_CONFIG();
+    ESP_RETURN_ON_ERROR(lvgl_port_init(&lvgl_cfg), TAG, "LVGL port initialization failed");
+
+    /* Add LCD screen */
+    ESP_LOGD(TAG, "Add LCD screen");
+    const lvgl_port_display_cfg_t disp_cfg = {
+        .io_handle = lcd_io,
+        .panel_handle = lcd_panel,
+        .buffer_size = EXAMPLE_LCD_H_RES * EXAMPLE_LCD_DRAW_BUFF_HEIGHT * sizeof(uint16_t),
+        .double_buffer = EXAMPLE_LCD_DRAW_BUFF_DOUBLE,
+        .hres = EXAMPLE_LCD_H_RES,
+        .vres = EXAMPLE_LCD_V_RES,
+        .monochrome = false,
+        /* Rotation values must be same as used in esp_lcd for initial settings of the screen */
+        .rotation = {
+            .swap_xy = false,
+            .mirror_x = true,
+            .mirror_y = true,
+        },
+        .flags = {
+            .buff_dma = true,
+#if LVGL_VERSION_MAJOR >= 9
+            .swap_bytes = true,
+#endif
+        }
+    };
+    lvgl_disp = lvgl_port_add_disp(&disp_cfg);
+
+    /* Add touch input (for selected screen) */
+    const lvgl_port_touch_cfg_t touch_cfg = {
+        .disp = lvgl_disp,
+        .handle = touch_handle,
+    };
+    lvgl_touch_indev = lvgl_port_add_touch(&touch_cfg);
+
+    return ESP_OK;
+}
+```
+
+lvgl de init
+
+```c
+static esp_err_t app_lvgl_deinit(void)
+{
+    ESP_RETURN_ON_ERROR(lvgl_port_remove_touch(lvgl_touch_indev), TAG, "LVGL touch removing failed");
+    gpio_uninstall_isr_service();
+
+    ESP_RETURN_ON_ERROR(lvgl_port_remove_disp(lvgl_disp), TAG, "LVGL disp removing failed");
+    ESP_RETURN_ON_ERROR(lvgl_port_deinit(), TAG, "LVGL deinit failed");
+
+    return ESP_OK;
+}
+```
+
+make main display code:
+
+```c
+static void app_main_display(void)
+{
+    lv_obj_t *scr = lv_scr_act();
+
+    /* Task lock */
+    lvgl_port_lock(0);
+
+    /* Your LVGL objects code here .... */
+
+    /* Label */
+    lv_obj_t *label = lv_label_create(scr);
+    lv_obj_set_width(label, EXAMPLE_LCD_H_RES);
+    lv_obj_set_style_text_align(label, LV_TEXT_ALIGN_CENTER, 0);
+#if LVGL_VERSION_MAJOR == 8
+    lv_label_set_recolor(label, true);
+    lv_label_set_text(label, "#FF0000 "LV_SYMBOL_BELL" Hello world Espressif and LVGL "LV_SYMBOL_BELL"#\n#FF9400 "LV_SYMBOL_WARNING" For simplier initialization, use BSP "LV_SYMBOL_WARNING" #");
+#else
+    lv_label_set_text(label, LV_SYMBOL_BELL" Hello world Espressif and LVGL "LV_SYMBOL_BELL"\n "LV_SYMBOL_WARNING" For simplier initialization, use BSP "LV_SYMBOL_WARNING);
+#endif
+    lv_obj_align(label, LV_ALIGN_CENTER, 0, -30);
+
+    /* Button */
+    lv_obj_t *btn = lv_btn_create(scr);
+    label = lv_label_create(btn);
+    lv_label_set_text_static(label, "Rotate screen");
+    lv_obj_align(btn, LV_ALIGN_BOTTOM_MID, 0, -30);
+    lv_obj_add_event_cb(btn, _app_button_cb, LV_EVENT_CLICKED, NULL);
+
+    /* Task unlock */
+    lvgl_port_unlock();
+}
+```
+
+memory leak test
+
+```c
+#define TEST_MEMORY_LEAK_THRESHOLD (50)
+
+static void check_leak(size_t start_free, size_t end_free, const char *type)
+{
+    ssize_t delta = start_free - end_free;
+    printf("MALLOC_CAP_%s: Before %u bytes free, After %u bytes free (delta %d)\n", type, start_free, end_free, delta);
+    TEST_ASSERT_GREATER_OR_EQUAL_MESSAGE (delta, TEST_MEMORY_LEAK_THRESHOLD, "memory leak");
+}
+```
+
+(optional) use unity to test for memleaks:
+
+```c
+TEST_CASE("Main test LVGL port", "[lvgl port]")
+{
+    size_t start_freemem_8bit = heap_caps_get_free_size(MALLOC_CAP_8BIT);
+    size_t start_freemem_32bit = heap_caps_get_free_size(MALLOC_CAP_32BIT);
+
+    ESP_LOGI(TAG, "Initilize LCD.");
+
+    /* LCD HW initialization */
+    TEST_ASSERT_EQUAL(app_lcd_init(), ESP_OK);
+
+    /* Touch initialization */
+    TEST_ASSERT_EQUAL(app_touch_init(), ESP_OK);
+
+    size_t start_lvgl_freemem_8bit = heap_caps_get_free_size(MALLOC_CAP_8BIT);
+    size_t start_lvgl_freemem_32bit = heap_caps_get_free_size(MALLOC_CAP_32BIT);
+
+    ESP_LOGI(TAG, "Initilize LVGL.");
+
+    /* LVGL initialization */
+    TEST_ASSERT_EQUAL(app_lvgl_init(), ESP_OK);
+
+    /* Show LVGL objects */
+    app_main_display();
+
+    vTaskDelay(5000 / portTICK_PERIOD_MS);
+
+    /* LVGL deinit */
+    TEST_ASSERT_EQUAL(app_lvgl_deinit(), ESP_OK);
+
+    /* When using LVGL8, it takes some time to release all memory */
+    vTaskDelay(1000 / portTICK_PERIOD_MS);
+
+    ESP_LOGI(TAG, "LVGL deinitialized.");
+
+    size_t end_lvgl_freemem_8bit = heap_caps_get_free_size(MALLOC_CAP_8BIT);
+    size_t end_lvgl_freemem_32bit = heap_caps_get_free_size(MALLOC_CAP_32BIT);
+    check_leak(start_lvgl_freemem_8bit, end_lvgl_freemem_8bit, "8BIT LVGL");
+    check_leak(start_lvgl_freemem_32bit, end_lvgl_freemem_32bit, "32BIT LVGL");
+
+    /* Touch deinit */
+    TEST_ASSERT_EQUAL(app_touch_deinit(), ESP_OK);
+
+    /* LCD deinit */
+    TEST_ASSERT_EQUAL(app_lcd_deinit(), ESP_OK);
+
+    vTaskDelay(1000 / portTICK_PERIOD_MS);
+
+    ESP_LOGI(TAG, "LCD deinitilized.");
+
+    size_t end_freemem_8bit = heap_caps_get_free_size(MALLOC_CAP_8BIT);
+    size_t end_freemem_32bit = heap_caps_get_free_size(MALLOC_CAP_32BIT);
+    check_leak(start_freemem_8bit, end_freemem_8bit, "8BIT");
+    check_leak(start_freemem_32bit, end_freemem_32bit, "32BIT");
 
 
+}
 
+void app_main(void)
+{
+    printf("TEST ESP LVGL port\n\r");
+    unity_run_menu();
+}
+```
 
+**general program execution format, and future "taskitization"**
 
+The program as it appears now is running in the main freeRTOS task.
 
+The program hands control to Unity's test menu.
+Unity can run the test case.
+baselines mem
+Which inits lcd
+(N/A) inits touch
+checks mem
+inits lvgl
+runs app_main_display() which draws objects
+de-init lvgl
+delay for 1000ms because memory takes time to release
+check mem
+de-init touch
+de-init screen
+delay for 1000ms because memory takes time to release
+check mem
+end
 
+Unity's task runs in the same main task.
 
+Concurrency starts when init LVGL port. 
 
+lvgl init will make an LVGL engine + tick source.
 
+User does not flush pixels rather create lvgl objects that lvgl handles into drawbuffer.
 
+**integration into software architecture of LLL**
+
+We use a .c file and .h file.
+Call the functions in main, they get run in freeRTOS maintask
+
+A writer task will touch LVGL objects. the TCP RX task does NOT call these, but it shoud send messages to GUItask.
+
+In side the task, we shall have port lock and unlock.
+LVGL engine runs concurrently.
+
+Data Flow is TCP RX TASK -> Parse Sockets, and Posts Messages to a Queue
+GUITASK dequeues and updates LVGL objects under lock.
+
+Message types can be: "set status text", "add new line to term", "update prog bar", "show/hide alert"
+
+We don't directly write to LVGL's buffer.
+
+The core philosophy is that network stack is living on core 0.
+Application logic shall live on core 1. This ensures TCP doesn't wait on UI.
+
+**My LVGL layout**
+
+The layout is subject to expansion on re-requisition of system hardware for other tasks, but for the current task, it is enough to have text in a terminal-like upwards scrolling fashion.
 
 
