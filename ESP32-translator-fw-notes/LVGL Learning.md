@@ -501,6 +501,73 @@ We don't directly write to LVGL's buffer.
 The core philosophy is that network stack is living on core 0.
 Application logic shall live on core 1. This ensures TCP doesn't wait on UI.
 
+If we need persistent memory, then we need to make sure the memory is not on a stack of a returning function.
+
+Memory on task stack and heap (static, malloc) is good.
+
+so if the task was
+
+```c
+void gui_task(void *pvParameters){
+	char text[128];
+	static char status[64];
+	strcpy(text, "hello");
+	
+	while(1){
+		vTaskDelay(pdMS_TO_TICKS(1000));
+		}
+	}
+```
+they stay valid.
+
+Where a freeRTOS task is just a C function with signature 
+
+`void TASK_NAME(void *pvParameters)`
+
+that never returns. freeRTOS will make a stack, task control block, and scheduler entry.
+
+for above guitask, 
+
+```c
+void app_main(void)
+{
+    xTaskCreate(
+        gui_task,          // function = task
+        "GUI",              // name
+        4096,               // stack size (bytes in ESP-IDF, words in vanilla FreeRTOS)
+        NULL,               // pvParameters
+        5,                  // priority
+        NULL                // optional handle
+    );
+}
+```
+
+Where, to pass data into the task,  pass via pointer or struct via pvParameters
+
+```c
+typedef struct {
+    QueueHandle_t gui_queue;
+} gui_ctx_t;
+
+// accessed within like this:
+void gui_task(void *arg){  //void pointer
+gui_ctx_t *ctx = arg;
+}
+
+xTaskCreate(gui_task, "GUI", 4096, &ctx, 5, NULL);
+```
+
+where in static context (heap) the variable can be declared OUTSIDE the task as
+
+`static gui_ctx_t gui_ctx`
+
+where in the initializations, the app_main has already:
+
+`gui_ctx.gui_queue = xQueueCreate(10, sizeof(gui_msg_t));`
+
+and while creating the task, has passed in the thing as &gui_ctx (address of gui_ctx)
+
+
 **My LVGL layout**
 
 The layout is subject to expansion on re-requisition of system hardware for other tasks, but for the current task, it is enough to have text in a terminal-like upwards scrolling fashion.
