@@ -64,6 +64,16 @@
             }
           },
           {
+            "id": "208c0e4fc7b382f5",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Graph view"
+            }
+          },
+          {
             "id": "73b2baaa91f610bd",
             "type": "leaf",
             "state": {
@@ -78,7 +88,7 @@
             }
           }
         ],
-        "currentTab": 3
+        "currentTab": 4
       }
     ],
     "direction": "vertical"
@@ -240,15 +250,16 @@
       "bases:Create new base": false
     }
   },
-  "active": "3b8bbcc09a86132b",
+  "active": "208c0e4fc7b382f5",
   "lastOpenFiles": [
-    "Folder Structure.md",
+    "Interface.md",
     "LVGL Learning.md",
+    "Unity Unit Testing.md",
     "AUDIO CAPTURE TASK.md",
-    "AUDIO UPLINK TASK.md",
     "GPIO TASK.md",
+    "Folder Structure.md",
+    "AUDIO UPLINK TASK.md",
     "GRAPHICS TASK.md",
-    "TEXT DOWNLINK TASK.md",
-    "Interface.md"
+    "TEXT DOWNLINK TASK.md"
   ]
 }

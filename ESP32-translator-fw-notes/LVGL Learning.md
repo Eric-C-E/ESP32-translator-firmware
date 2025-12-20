@@ -385,7 +385,7 @@ static void check_leak(size_t start_free, size_t end_free, const char *type)
 }
 ```
 
-(optional) use unity to test for memleaks:
+(optional) use [[Unity Unit Testing]] to test for memleaks:
 
 ```c
 TEST_CASE("Main test LVGL port", "[lvgl port]")
@@ -571,5 +571,6 @@ and while creating the task, has passed in the thing as &gui_ctx (address of gui
 **My LVGL layout**
 
 The layout is subject to expansion on re-requisition of system hardware for other tasks, but for the current task, it is enough to have text in a terminal-like upwards scrolling fashion.
+
 
 
