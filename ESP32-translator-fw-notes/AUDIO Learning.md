@@ -120,7 +120,7 @@ i2s_std_clk_config_t
 ```
 i2s_std_slot_config_t
 ```c
-	.data_bid_width //I2S_DATA_BIT_WIDTH_24BIT
+	.data_bit_width //I2S_DATA_BIT_WIDTH_24BIT
 	.slot_bit_width //I2S_SLOT_BIT_WIDTH_32BIT
 	.slot_mode
 	.slot_mask
