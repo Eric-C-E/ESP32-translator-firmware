@@ -36,4 +36,13 @@ TODO text file
 
 So the pattern is, the CMakeLists is MANDATORY, and files to run go into main folder. 
 
-	
+
+**Tasks**
+
+Generally, make a namedfile.c, and namedfile.h (for unit testing or to call from main)
+
+inside namedfile.c, write initializations, memory allocations, and functions.
+
+Make a function that creates tasks defined in that file.
+
+Call this function from main task (main file).

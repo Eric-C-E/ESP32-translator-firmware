@@ -284,8 +284,9 @@
   },
   "active": "2175cba09835794b",
   "lastOpenFiles": [
-    "Interrupt Service Routines and State Machines Learning.md",
+    "Folder Structure.md",
     "AUDIO Learning.md",
+    "Interrupt Service Routines and State Machines Learning.md",
     "LVGL Learning.md",
     "AUDIO CAPTURE TASK.md",
     "AUDIO UPLINK TASK.md",
@@ -293,7 +294,6 @@
     "Interface.md",
     "Unity Unit Testing.md",
     "GPIO TASK.md",
-    "Folder Structure.md",
     "TEXT DOWNLINK TASK.md"
   ]
 }

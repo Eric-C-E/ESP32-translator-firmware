@@ -24,85 +24,7 @@ The microphone is 24 bit data precision.
 
 **Example Code**
 
-The provided audio recorder example is using PDM modulation.
-
-Still gives some clues to operating the microphone:
-
-```c
-#define NUM_CHANNELS (1) //for mono
-#define SAMPLE_SIZE (CONFIG_EXAMPLE_BIT_SAMPLE *1024)
-#define BYTE_RATE (CONFIG_EXAMPLE_SAMPLE_RATE * (CONFIG_EXAMPLE_BIT_SAMPLE / 8)) * NUM CHANNELS
-//but this is seemingly unused.
-```
-
-Microphone initialization:
-
-
-```c
-void init_microphone(void)
-{
-#if SOC_I2S_SUPPORTS_PDM2PCM
-	ESP_LOGI(TAG, "receive PDM microphone data in PCM format");
-#else
-
-ESP_LOGI(TAG, "Receive PDM microphone data in raw PDM format");
-
-#endif // SOC_I2S_SUPPORTS_PDM2PCM
-
-i2s_chan_config_t chan_cfg = I2S_CHANNEL_DEFAULT_CONFIG(I2S_NUM_AUTO, I2S_ROLE_MASTER);
-
-ESP_ERROR_CHECK(i2s_new_channel(&chan_cfg, NULL, &rx_handle));
-
-  
-
-i2s_pdm_rx_config_t pdm_rx_cfg = {
-
-.clk_cfg = I2S_PDM_RX_CLK_DEFAULT_CONFIG(CONFIG_EXAMPLE_SAMPLE_RATE),
-
-/* The default mono slot is the left slot (whose 'select pin' of the PDM microphone is pulled down) */
-
-#if SOC_I2S_SUPPORTS_PDM2PCM
-
-.slot_cfg = I2S_PDM_RX_SLOT_PCM_FMT_DEFAULT_CONFIG(I2S_DATA_BIT_WIDTH_16BIT, I2S_SLOT_MODE_MONO),
-
-#else
-
-.slot_cfg = I2S_PDM_RX_SLOT_RAW_FMT_DEFAULT_CONFIG(I2S_DATA_BIT_WIDTH_16BIT, I2S_SLOT_MODE_MONO),
-
-#endif
-
-.gpio_cfg = {
-
-.clk = CONFIG_EXAMPLE_I2S_CLK_GPIO,
-
-.din = CONFIG_EXAMPLE_I2S_DATA_GPIO,
-
-.invert_flags = {
-
-.clk_inv = false,
-
-},
-
-},
-
-};
-
-ESP_ERROR_CHECK(i2s_channel_init_pdm_rx_mode(rx_handle, &pdm_rx_cfg));
-
-ESP_ERROR_CHECK(i2s_channel_enable(rx_handle));
-}
-```
-
-With a recording function that looks terrible.
-
-Above might be bad example. Better one could be the i2s_std example. In that example:
-
-
-
-
 Espressif Official Documentation Example:
-
-
 
 **My PCM Recording**
 
@@ -120,13 +42,13 @@ Need to add the driver to REQUIRES esp_driver_i2s.
 
 i2s_chan_handle_t rx_handle;
 //default helper macro
-i2s_chan_config_t chan_cfg = I2S_CHANNEL_DEFAULT_CONFIG(I2S_NUM_AUTO, I2S_ROLE_MASTER);
+i2s_chan_config_t chan_cfg = I2S_CHANNEL_DEFAULT_CONFIG(I2S_NUM_AUTO, I2S_ROLE_MASTER); //data bit width being 24 means dma_frame_num needs to be multiple of 3.
 
 i2s_new_channel(&chan_cfg, NULL, &rx_handle);
 
 i2s_std_config_t std_cfg = {
 	.clk_cfg = I2S_STD_CLK_DEFAULT_CONFIG(16000), //was 48000
-	.slot_cfg = I2S_STD_MSB_SLOT_DEFAULT_CONFIG(I2S_DATA_BIT_WIDTH_24BIT, I2S_SLOT_MODE_STEREO),
+	.slot_cfg = I2S_STD_PHILIPS_SLOT_DEFAULT_CONFIG(I2S_DATA_BIT_WIDTH_24BIT, I2S_SLOT_MODE_STEREO),
 	.gpio_cfg = {
 		.mclk = I2S_GPIO_UNUSED,
 		.bclk = GPIO_NUM_4,
@@ -193,13 +115,13 @@ i2s_std_clk_config_t
 	.sample_rate_hz //16000 Hz
 	.clk_src //choose source
 	.ext_clk_freq_hz //unimportant if no external clock
-	.mclk_multiple //important for 24 bit this is set to 384
+	.mclk_multiple //set to I2S_MCLK_MULTIPLE_384
 	.bclk_div //unimportant for master role
 ```
 i2s_std_slot_config_t
 ```c
-	.data_bid_width //48
-	.slot_bit_width //24
+	.data_bid_width //I2S_DATA_BIT_WIDTH_24BIT
+	.slot_bit_width //I2S_SLOT_BIT_WIDTH_32BIT
 	.slot_mode
 	.slot_mask
 	.ws_width
@@ -221,6 +143,59 @@ i2s_std_gpio_config_t
 	.ws_inv
 	.invert_flags
 ```
+for reference: 
+
+```c
+for I2S Driver Config
+#define I2S_STD_CLK_DEFAULT_CONFIG(rate) { \
+    .sample_rate_hz = rate, \
+    .clk_src = I2S_CLK_SRC_DEFAULT, \
+    .mclk_multiple = I2S_MCLK_MULTIPLE_256, \
+    .bclk_div = 8, \
+}
+#define I2S_STD_PHILIPS_SLOT_DEFAULT_CONFIG(bits_per_sample, mono_or_stereo) { \
+    .data_bit_width = bits_per_sample, \
+    .slot_bit_width = I2S_SLOT_BIT_WIDTH_AUTO, \
+    .slot_mode = mono_or_stereo, \
+    .slot_mask = I2S_STD_SLOT_BOTH, \
+    .ws_width = bits_per_sample, \
+    .ws_pol = false, \
+    .bit_shift = true, \
+    .left_align = true, \
+    .big_endian = false, \
+    .bit_order_lsb = false \
+}
+
+for I2S CHANNEL config
+
+#define I2S_CHANNEL_DEFAULT_CONFIG(i2s_num, i2s_role) { \
+    .id = i2s_num, \
+    .role = i2s_role, \
+    .dma_desc_num = 6, \
+    .dma_frame_num = 240, \must be multiple of three for 24 bit data!
+    .auto_clear_after_cb = false, \
+    .auto_clear_before_cb = false, \
+    .allow_pd = false, \
+    .intr_priority = 0, \
+}
+```
+240 actually does work, we can set DMA buffers to 8 though.
+
+To write into a 3072 byte queue buffer (to TCP stack)
+
+Functions:
+
+i2s_channel_read(i2s_chan_handle_t, void * dest, size_t size, size_t * bytes_read, uin32_t timeout_ms)
+
+dest is the receiving data buffer. Buffer size must respect DMA buffer size (multiple of 2 and 3)
+size is max data buffer length.
+bytes_read can be NULL
+timeout_ms is max block time.
+
+returns ESP_OK if successful. (reads until either it's out of stuff, or rx buffer is full)
+
+TRACK r_bytes so we can enqueue into our TCP ringbuffer the right amount of data and avoid any duplicate data.
+
 
 
 **Architecture**
