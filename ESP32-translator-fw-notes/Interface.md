@@ -13,3 +13,8 @@
 TCP header structure:
 [https://www.cbtnuggets.com/blog/technology/networking/what-is-tcp-header]
 
+
+
+**audio**- owned by [[AUDIO CAPTURE TASK]]
+
+single ringbuffer type RingbufHandle_t audio_rb

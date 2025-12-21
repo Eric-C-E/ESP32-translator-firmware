@@ -11,4 +11,7 @@ Connects to:
 with Finite State Machine.
 
 [[AUDIO UPLINK TASK]]
-with Audio Ringbuffer
+with Audio Ringbuffer audio_rb
+
+References
+[[Interface]]
