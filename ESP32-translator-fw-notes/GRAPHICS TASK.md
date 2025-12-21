@@ -15,3 +15,5 @@ GPIO Task:
 Connects to:
 [[TEXT DOWNLINK TASK]]
 with Queue
+
+Code complete by unit test - need to be integrated.

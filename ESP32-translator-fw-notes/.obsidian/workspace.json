@@ -67,10 +67,28 @@
             "id": "208c0e4fc7b382f5",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Graph view"
+              "type": "markdown",
+              "state": {
+                "file": "AUDIO CAPTURE TASK.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "AUDIO CAPTURE TASK"
+            }
+          },
+          {
+            "id": "800b6ad50b90af4d",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "AUDIO Learning.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "AUDIO Learning"
             }
           },
           {
@@ -88,7 +106,7 @@
             }
           }
         ],
-        "currentTab": 4
+        "currentTab": 5
       }
     ],
     "direction": "vertical"
@@ -250,16 +268,17 @@
       "bases:Create new base": false
     }
   },
-  "active": "208c0e4fc7b382f5",
+  "active": "800b6ad50b90af4d",
   "lastOpenFiles": [
-    "Interface.md",
     "LVGL Learning.md",
-    "Unity Unit Testing.md",
+    "AUDIO Learning.md",
     "AUDIO CAPTURE TASK.md",
-    "GPIO TASK.md",
-    "Folder Structure.md",
     "AUDIO UPLINK TASK.md",
     "GRAPHICS TASK.md",
+    "Interface.md",
+    "Unity Unit Testing.md",
+    "GPIO TASK.md",
+    "Folder Structure.md",
     "TEXT DOWNLINK TASK.md"
   ]
 }

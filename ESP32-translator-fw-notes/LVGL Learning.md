@@ -27,16 +27,16 @@ We use SPI2 because SPI0/1 are RAM/FLASH access lanes.
 The peripheral pin assignments of ESP32 are set by priority - fastest are through Priority 1 (P1) that is routed directly  through IOMUX or RTC IOMUX not GPIOMUX. 
 For SPI2, these pins are: 
 
-| Pin     | Physical | GPIO | Function                        |
-| ------- | -------- | ---- | ------------------------------- |
-| FSPIHD  |          | 09   | HOLD *not connected*            |
-| FSPICS0 |          | 10   | SELECT                          |
-| FSPID   |          | 11   | MOSI                            |
-| FSPICLK |          | 12   | CLOCK                           |
-| FSPIQ   |          | 13   | MISO *not connected*            |
-| FSPIWP  |          | 14   | WRITE PROTECT *not connected*   |
-| *RST*   | 3V3      | 3V3  | RST pin pulled high to function |
-| *DC*    | 8        | 8    | DC data command mux             |
+| Pin     | Physical | GPIO | Function                        |     |
+| ------- | -------- | ---- | ------------------------------- | --- |
+| FSPIHD  |          | 09   | HOLD *not connected*            |     |
+| FSPICS0 |          | 10   | SELECT                          |     |
+| FSPID   |          | 11   | MOSI                            |     |
+| FSPICLK |          | 12   | CLOCK                           |     |
+| FSPIQ   |          | 13   | MISO *not connected*            |     |
+| FSPIWP  |          | 14   | WRITE PROTECT *not connected*   |     |
+| *RST*   | 3V3      | 3V3  | RST pin pulled high to function |     |
+| *DC*    | 8        | 8    | DC data command mux             |     |
 Any other GPIO pin can be made into a chip select. Can do
 `cs_gpio_num` per panel.
 
