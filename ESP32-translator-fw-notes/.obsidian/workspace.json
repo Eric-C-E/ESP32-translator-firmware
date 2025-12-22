@@ -298,17 +298,17 @@
   },
   "active": "777f2b32f2753d8b",
   "lastOpenFiles": [
-    "Interface.md",
+    "AUDIO UPLINK TASK.md",
+    "GPIO TASK.md",
     "TODO.md",
+    "Interface.md",
+    "GRAPHICS TASK.md",
     "Interrupt Service Routines and State Machines Learning.md",
     "LVGL Learning.md",
     "TEXT DOWNLINK TASK.md",
     "Unity Unit Testing.md",
     "Folder Structure.md",
-    "AUDIO UPLINK TASK.md",
     "AUDIO Learning.md",
-    "AUDIO CAPTURE TASK.md",
-    "GRAPHICS TASK.md",
-    "GPIO TASK.md"
+    "AUDIO CAPTURE TASK.md"
   ]
 }

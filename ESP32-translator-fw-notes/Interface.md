@@ -18,3 +18,7 @@ TCP header structure:
 **audio**- owned by [[AUDIO CAPTURE TASK]]
 
 single ringbuffer type RingbufHandle_t audio_rb
+
+**FSM** - owned by [[GPIO TASK]]
+
+enum app_gpio_state_t type app_gpio_state

@@ -16,4 +16,14 @@ Connects to:
 [[TEXT DOWNLINK TASK]]
 with Queue
 
-Code complete by unit test - need to be integrated.
+[[GPIO TASK]]
+with FSM
+
+
+Code complete by unit test - need to be integrated. Outstanding work: 
+Display 1: create AR scrolling text
+Display 1: create READY and RECORDING graphics
+
+Display 2: configure HAL, esp_lcd_xxxx
+Display 2: configure pipeline
+Display 2: create scrolling text - TGT 
