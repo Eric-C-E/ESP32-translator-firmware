@@ -4,10 +4,10 @@ Days of work: add up to 1
 
 *Create the gpio task and monitor states in monitor 0.4 - done*
 
-Create TCP task that reads audio_rb that sends continually to Jetson AP 0.4
+*Create TCP task that reads audio_rb that sends continually to Jetson AP 0.4
 Test this task using NetCat.
 Subtasks - write TCP program
-- update menuconfig Kconfig file to remove ipv6, set defaults, change names
+*- update menuconfig Kconfig file to remove ipv6, set defaults, change names*
 
 Next Day
 
@@ -17,7 +17,7 @@ if not good, fix, delay
 
 if good, work on the display task -> make it do what we want for circular screen instead of the ball 0.3 test on synthetic data
 
-By this point, 4 tasks are done, only TCP socket for receiving is not, so create the TCP socket for receiving and test it using netCat 0.5
+*By this point, 4 tasks are done, only TCP socket for rx needs to be done- DONE*
 
 Next Day
 
