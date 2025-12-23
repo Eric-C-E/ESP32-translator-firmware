@@ -139,12 +139,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "ESP-LLL/LVGL Learning.md",
+                "file": "ESP-LLL/Interface.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "LVGL Learning"
+              "title": "Interface"
             }
           },
           {
@@ -327,6 +327,8 @@
   "active": "d00748ac62bca616",
   "lastOpenFiles": [
     "ESP-LLL/AUDIO Learning.md",
+    "ESP-LLL/TODO.md",
+    "ESP-LLL/LVGL Learning.md",
     "ESP-LLL/AUDIO CAPTURE TASK.md",
     "ESP-LLL/GPIO TASK.md",
     "ESP-LLL/GRAPHICS TASK.md",
@@ -336,14 +338,12 @@
     "Jetson-Live-Translator",
     "ESP-LLL",
     "ESP-LLL/Untitled.canvas",
-    "ESP-LLL/TODO.md",
     "ESP-LLL/Interface.md",
     "ESP-LLL/AUDIO UPLINK TASK.md",
     "ESP-LLL/Folder Structure.md",
     "Interrupt Service Routines and State Machines Learning.md",
     "ESP-LLL/WIFI TASK.md",
     "ESP-LLL/Unity Unit Testing.md",
-    "ESP-LLL/LVGL Learning.md",
     "ESP-LLL/TEXT DOWNLINK TASK.md"
   ]
 }

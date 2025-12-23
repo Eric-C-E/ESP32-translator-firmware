@@ -17,3 +17,15 @@ TCP header structure:
 Describes communication between TCP sockets of ESP32-S3 and Jetson Orin Nano
 
 [[AUDIO UPLINK TASK]][[TEXT DOWNLINK TASK]]
+
+Payload Structure:
+Up to 3072 bytes of audio bytes. Packed. No padding. Little endian, stereo interleaved format.
+L0 | R0 | L1 | R1 | etc...
+Bytes grouped in 3-byte samples, 6 bytes per stereo frame.
+
+Have to reshape into Nx3 bytes. 
+
+Normalize for WHISPER: float32 in [-1.0, +1.0] by dividing by 2**23, mono. 
+16 kHz is already expected.
+Ensure payload_len is a multiple of six before sending to whisper. %6.
+

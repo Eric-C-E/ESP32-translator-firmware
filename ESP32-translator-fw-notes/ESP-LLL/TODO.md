@@ -29,7 +29,7 @@ netcat Jetson sends packets, get printed on screen.
 
 Next Day
 
-Build hardware and full system integrated verification test 1.0
+*Build hardware and full system integrated verification test 1.0 - DONE
 
 Pivot to Jetson Work - Out of Scope.
 
