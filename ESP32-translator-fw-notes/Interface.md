@@ -14,11 +14,6 @@ TCP header structure:
 [https://www.cbtnuggets.com/blog/technology/networking/what-is-tcp-header]
 
 
+Describes communication between TCP sockets of ESP32-S3 and Jetson Orin Nano
 
-**audio**- owned by [[AUDIO CAPTURE TASK]]
-
-single ringbuffer type RingbufHandle_t audio_rb
-
-**FSM** - owned by [[GPIO TASK]]
-
-enum app_gpio_state_t type app_gpio_state
+[[AUDIO UPLINK TASK]][[TEXT DOWNLINK TASK]]

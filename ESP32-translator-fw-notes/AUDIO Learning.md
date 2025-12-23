@@ -1,4 +1,4 @@
-Together with [[LVGL Learning]] and [[TCP Learning]]
+Together with [[LVGL Learning]] and [[TCP Learning]] and [[Folder Structure]] and [[Unity Unit Testing]]
 
 INMP 441 microphones (L/R) channels both used.
 

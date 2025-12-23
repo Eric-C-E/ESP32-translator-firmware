@@ -19,6 +19,9 @@ with Queue
 [[GPIO TASK]]
 with FSM
 
+[[WIFI TASK]] 
+with RSSI
+
 
 Code complete by unit test - need to be integrated. Outstanding work: 
 Display 1: create AR scrolling text

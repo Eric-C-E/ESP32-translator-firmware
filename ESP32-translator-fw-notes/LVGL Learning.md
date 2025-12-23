@@ -1,3 +1,5 @@
+With [[AUDIO Learning]][[Folder Structure]][[Unity Unit Testing]]
+
 Was looking into LVGL_port for ESP32, but it appears outdated and users have reported the program no longer works for newer vers. esp.idf (v5) whereas I am on V6.0.
 
 Looking into TFT_eSPI, which is a HW driver with some fast-drawing primitives. Draw and it will put it on the screen.
