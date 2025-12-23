@@ -1,9 +1,11 @@
 Priority: Medium
 
 GPIO Task:
-- Pull correct audio for the given language active state as per GPIO TASK
-- Packetize
-- Add TCP framing that conveys all necessary information
+- Sends raw stereo audio in 3072 byte chunks from audio ringbuffer
+- Packetizes with 8 byte header that contains length information in network protocol format
+- IMPORTANT: need to decode from network protocol format on Jetson Side
+- Uses FSM state to determine header structure.
+- Uses a send_all routine to ensure sending all bytes read from ringbuffer on events outside of program control like a TCP hangup/TCP exit buffer full condition
 - TCP Send to Jetson over Wifi-STA
 
 Connects to:
@@ -16,5 +18,7 @@ with Audio Ringbuffer audio_rb
 References
 [[Interface]]
 
-Testing Audio Uplink
+Testing Audio Uplink using netcat:
+
+Results:
 
