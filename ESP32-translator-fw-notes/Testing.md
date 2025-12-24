@@ -1,4 +1,4 @@
-Integration testing: 
+Integration testing: Part 1 - Audio Pipeline
 
 log: E (1152805) TCP tx task: TCP tx lang1 state - failed to read from audio rb
 
@@ -28,3 +28,8 @@ Got PERIODIC spikes in the receiver side. Turns out it was bad parsing (1024/204
 Fixed by using vRingBufferreceiveUpTo() with argument 3072 maximum bytes.
 
 No crashes in a few minutes. Good enough.
+
+Now, it looks like the Jetson Receiver is *reliably* receiving packets without drop from the ESP. 
+We can consider the recording pipeline complete.
+
+Integration Testing: Part 2: Display Pipeline
