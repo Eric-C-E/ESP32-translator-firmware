@@ -33,3 +33,13 @@ Now, it looks like the Jetson Receiver is *reliably* receiving packets without d
 We can consider the recording pipeline complete.
 
 Integration Testing: Part 2: Display Pipeline
+
+Made tcp_test on Jetson Side send packets as well as receive audio.
+
+Packets are text snippets of up to 128 characters.
+
+It works fine. Although, it "erases" by actual packet not row. 
+Which is honestly fine. Works pretty well. Will revisit behavior if it proves problematic.
+
+**No critical issues detected**
+

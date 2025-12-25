@@ -156,12 +156,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "ESP-LLL/GRAPHICS TASK.md",
+                "file": "Testing.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "GRAPHICS TASK"
+              "title": "Testing"
             }
           },
           {
@@ -343,6 +343,9 @@
   },
   "active": "f4d29dcc24fc615a",
   "lastOpenFiles": [
+    "ESP-LLL/WIFI TASK.md",
+    "ESP-LLL/GRAPHICS TASK.md",
+    "ESP-LLL/TEXT DOWNLINK TASK.md",
     "Testing.md",
     "ESP-LLL/Untitled.canvas",
     "ESP-LLL/Untitled.base",
@@ -352,7 +355,6 @@
     "ESP-LLL/LVGL Learning.md",
     "ESP-LLL/AUDIO CAPTURE TASK.md",
     "ESP-LLL/GPIO TASK.md",
-    "ESP-LLL/GRAPHICS TASK.md",
     "Architecture.md",
     "Learning to use Torch.md",
     "Jetson-Live-Translator",
@@ -360,8 +362,6 @@
     "ESP-LLL/AUDIO UPLINK TASK.md",
     "ESP-LLL/Folder Structure.md",
     "Interrupt Service Routines and State Machines Learning.md",
-    "ESP-LLL/WIFI TASK.md",
-    "ESP-LLL/Unity Unit Testing.md",
-    "ESP-LLL/TEXT DOWNLINK TASK.md"
+    "ESP-LLL/Unity Unit Testing.md"
   ]
 }
