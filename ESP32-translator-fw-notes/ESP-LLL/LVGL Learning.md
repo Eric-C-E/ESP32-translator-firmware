@@ -42,6 +42,16 @@ For SPI2, these pins are:
 Any other GPIO pin can be made into a chip select. Can do
 `cs_gpio_num` per panel.
 
+Display 2 has same settings. Mapping to the interface is: 
+From the datasheet:
+
+| Pin  | Pin on Screen |
+| ---- | ------------- |
+| MOSI |               |
+| CLK  |               |
+| CS   |               |
+| DC   |               |
+
 To bring up the display after this connections:
 
 Initialize SPI (spi enable)

@@ -156,12 +156,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Testing.md",
+                "file": "Jetson-Live-Translator/OpenAI-Whisper Application Notes.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Testing"
+              "title": "OpenAI-Whisper Application Notes"
             }
           },
           {
@@ -343,20 +343,25 @@
   },
   "active": "f4d29dcc24fc615a",
   "lastOpenFiles": [
-    "ESP-LLL/WIFI TASK.md",
+    "Jetson-Live-Translator/MarianMT.md",
+    "Jetson-Live-Translator/OpenAI-Whisper Application Notes.md",
+    "Learning to use Torch.md",
+    "Architecture.md",
+    "ESP-LLL/LVGL Learning.md",
     "ESP-LLL/GRAPHICS TASK.md",
-    "ESP-LLL/TEXT DOWNLINK TASK.md",
+    "Jetson-Live-Translator/Numpy Learning.md",
+    "Jetson-Live-Translator/Python TCP Learning.md",
+    "Jetson-Live-Translator/Select learning.md",
     "Testing.md",
+    "ESP-LLL/WIFI TASK.md",
+    "ESP-LLL/TEXT DOWNLINK TASK.md",
     "ESP-LLL/Untitled.canvas",
     "ESP-LLL/Untitled.base",
     "ESP-LLL/Interface.md",
     "ESP-LLL/AUDIO Learning.md",
     "ESP-LLL/TODO.md",
-    "ESP-LLL/LVGL Learning.md",
     "ESP-LLL/AUDIO CAPTURE TASK.md",
     "ESP-LLL/GPIO TASK.md",
-    "Architecture.md",
-    "Learning to use Torch.md",
     "Jetson-Live-Translator",
     "ESP-LLL",
     "ESP-LLL/AUDIO UPLINK TASK.md",
