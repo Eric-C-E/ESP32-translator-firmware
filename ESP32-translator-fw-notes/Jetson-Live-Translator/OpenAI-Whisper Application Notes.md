@@ -1,0 +1,1 @@
+Whisper works fine in the program.

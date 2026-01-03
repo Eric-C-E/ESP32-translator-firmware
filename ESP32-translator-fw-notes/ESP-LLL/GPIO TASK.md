@@ -17,7 +17,7 @@ with Finite State Machine.
 
 Complete 
 
-Can change the GPIO pins used, currently GPIO0, GPIO1.
+Can change the GPIO pins used, currently GPIO47, GPIO48.
 
 Can get state anywhere using gpio_get_state
 

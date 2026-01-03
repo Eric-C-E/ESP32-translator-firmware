@@ -27,43 +27,34 @@ Setting up SPI:
 With [ESP_LCD_GC9A01](https://github.com/espressif/esp-bsp/tree/618b05297dae1aa3fab986d5ca7b89b328e1919a/components/lcd/esp_lcd_gc9a01), it is possible to do it quickly, however I must set up the SPI first.
 We use SPI2 because SPI0/1 are RAM/FLASH access lanes.
 The peripheral pin assignments of ESP32 are set by priority - fastest are through Priority 1 (P1) that is routed directly  through IOMUX or RTC IOMUX not GPIOMUX. 
-For SPI2, these pins are: 
+For SPI2 and pertaining to Display 1, these pins are: 
 
-| Pin     | Physical | GPIO | Function                        |     |
-| ------- | -------- | ---- | ------------------------------- | --- |
-| FSPIHD  |          | 09   | HOLD *not connected*            |     |
-| FSPICS0 |          | 10   | SELECT                          |     |
-| FSPID   |          | 11   | MOSI                            |     |
-| FSPICLK |          | 12   | CLOCK                           |     |
-| FSPIQ   |          | 13   | MISO *not connected*            |     |
-| FSPIWP  |          | 14   | WRITE PROTECT *not connected*   |     |
-| *RST*   | 3V3      | 3V3  | RST pin pulled high to function |     |
-| *DC*    | 8        | 8    | DC data command mux             |     |
+| Pin     | Pin on Screen | ESP-Side GPIO | Function                        |     |
+| ------- | ------------- | ------------- | ------------------------------- | --- |
+| FSPIHD  | --            | 09            | HOLD *not connected*            |     |
+| FSPICS0 | "CS"          | 10            | SELECT                          |     |
+| FSPID   | "SD"          | 11            | MOSI                            |     |
+| FSPICLK | "CLK"         | 12            | CLOCK                           |     |
+| FSPIQ   | --            | 13            | MISO *not connected*            |     |
+| FSPIWP  | --            | 14            | WRITE PROTECT *not connected*   |     |
+| *RST*   | "RS"          | 3V3           | RST pin pulled high to function |     |
+| *DC*    | "DC"          | 8             | DC data command mux             |     |
 Any other GPIO pin can be made into a chip select. Can do
 `cs_gpio_num` per panel.
 
 Display 2 has same settings. Mapping to the interface is: 
 From the datasheet:
 
-| Pin  | Pin on Screen |
-| ---- | ------------- |
-| MOSI |               |
-| CLK  |               |
-| CS   |               |
-| DC   |               |
+| Pin  | Pin on Screen (40-FPC) | ESP-Side GPIO |
+| ---- | ---------------------- | ------------- |
+| MOSI | 13                     | 11            |
+| CLK  | 10                     | 12            |
+| CS   | 9                      | 17            |
+| DC   | 11                     | 8             |
 
 To bring up the display after this connections:
 
-Initialize SPI (spi enable)
-Initialize the GC9A01 using esp_lcd_gc9a01 (send stuff GC9A01 expects to SPI)
-Write some useless stuff to it (test program)
-
-Using codex,
-It produced some files in main and updated the CMakeLists. 
-It created a light scaffolding of stuff like queues that will be used later, as well as app_display.c that is the task we want.
-
-Upon build and test,
-Correct sequence is:
+Correct sequence to use screens is:
 Ensure that we have 
 `const spi_bus_config_t buscfg = stuff`
 
@@ -498,7 +489,7 @@ User does not flush pixels rather create lvgl objects that lvgl handles into dra
 We use a .c file and .h file.
 Call the functions in main, they get run in freeRTOS maintask
 
-A writer task will touch LVGL objects. the TCP RX task does NOT call these, but it shoud send messages to GUItask.
+A writer task will touch LVGL objects. the TCP RX task does NOT call these, but it should send messages to GUItask.
 
 In side the task, we shall have port lock and unlock.
 LVGL engine runs concurrently.
