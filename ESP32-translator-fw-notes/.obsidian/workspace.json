@@ -179,6 +179,20 @@
             }
           },
           {
+            "id": "643844a4206cb8af",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Creating esp-lcd-nv3041a.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Creating esp-lcd-nv3041a"
+            }
+          },
+          {
             "id": "73b2baaa91f610bd",
             "type": "leaf",
             "state": {
@@ -193,7 +207,7 @@
             }
           }
         ],
-        "currentTab": 11
+        "currentTab": 12
       }
     ],
     "direction": "vertical"
@@ -355,10 +369,11 @@
       "bases:Create new base": false
     }
   },
-  "active": "cf7afcb858878b47",
+  "active": "643844a4206cb8af",
   "lastOpenFiles": [
-    "ESP-LLL/LVGL Learning.md",
     "ESP-LLL/Hardware Design.md",
+    "Creating esp-lcd-nv3041a.md",
+    "ESP-LLL/LVGL Learning.md",
     "ESP-LLL/GPIO TASK.md",
     "ESP-LLL/GRAPHICS TASK.md",
     "ESP-LLL/TODO.md",
