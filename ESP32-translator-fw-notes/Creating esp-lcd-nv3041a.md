@@ -38,7 +38,8 @@ Set:
 Set the scan window of the timing engine. 
 SCAN_HRES default 0b111111111
 SCAN_VRES default 0b111111111
-
+set to 480
+128
 
 GATE_Setting 0x51 -> usually not touched
 
@@ -47,6 +48,8 @@ GATE_SCAN 0x50 -> try default, usually not touched
 For sure:
 CASET 0x2A Col Set -> if mv = 0, 0-479. If mv = 1, 0-271  | want mv = 0
 RASET 0x2B Row Set -> if mv = 0, 0-271, if mv = 0, 0-479  | want mv = 0
+set to 0>479
+and 0>127
 
 SCAN_HRES default 0b111111111
 SCAN_VRES default 0b111111111

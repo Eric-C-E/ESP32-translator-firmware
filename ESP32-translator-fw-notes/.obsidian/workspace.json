@@ -184,12 +184,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Creating esp-lcd-nv3041a.md",
+                "file": "ESP-LLL/LVGL Learning.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Creating esp-lcd-nv3041a"
+              "title": "LVGL Learning"
             }
           },
           {
@@ -371,14 +371,14 @@
   },
   "active": "643844a4206cb8af",
   "lastOpenFiles": [
-    "ESP-LLL/Hardware Design.md",
+    "ESP-LLL/Interface.md",
+    "ESP-LLL/GRAPHICS TASK.md",
     "Creating esp-lcd-nv3041a.md",
+    "ESP-LLL/Hardware Design.md",
     "ESP-LLL/LVGL Learning.md",
     "ESP-LLL/GPIO TASK.md",
-    "ESP-LLL/GRAPHICS TASK.md",
     "ESP-LLL/TODO.md",
     "ESP-LLL/TEXT DOWNLINK TASK.md",
-    "ESP-LLL/Interface.md",
     "ESP-LLL/AUDIO Learning.md",
     "Testing.md",
     "Learning to use Torch.md",
