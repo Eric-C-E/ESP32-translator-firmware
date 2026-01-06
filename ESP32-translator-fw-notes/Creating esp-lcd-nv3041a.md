@@ -96,6 +96,59 @@ esp_err_t panel_nv3041_init(esp_lcd_panel_t *panel)
 
 ```
 
+**Day One**
+Laid out scaffolding based on both esp_lcd_nv3023 and esp_lcd_gc9a01 which is a well-used and well-written package.
+
+Read and internalized parts of esp_lcd_nv3052 as well.
+
+Finalized hard-wired points on FPC breakout.
+
+Attempted to write and wire in an init pattern from datasheet. 
+
+Failed to work (would initialize to random GRAM)
+
+Tested multiple possible failure points.
+
+Tried bigger delay - no.
+Tried probing CS - works and confirms no confusion between screen 1 and 2 on same bus. -no solution
+Tried lowering pixel clock worrying it's signal integrity - no.
+Changed standard COLMOD 0x55 to 0x01 (datasheet specified) - no
+
+
+
+**Day Two - Working**
+Started day by searching for init.
+Found forum with someone requesting support.
+Support found in once place - ARduino_GFX.
+
+Copied init blob from Arduino gfx.
+
+Did not work.
+
+Checked registers carefully to find mistakes. Checked MADCTL indexing against standard indexing assumed by esp_lcd -> same indexing.
+
+Ensured CASET and RASET made sense.
+Ensured SWRESET would always have 120ms delay.
+Ensured the display was not expecting 3 wire 9 bit SPI.
+
+Decided to rework the FPC breakout.
+Added additional hardwires, including IM1 to GND explicitly. 
+Tied all VCC = 3V3 and all GND together.
+Broke out HWreset pin, which had been previously tied to HIGH (as with Gc9a01)
+
+Read datasheet blob that mentioned upon hard power on, panel may enter invalid state that REQUIRES HW reset.
+
+New HW reset facilitates that. 
+
+Works. 
+
+Only problem is that the display appears inverted.
+
+
+
+
+
+
 **Making Open-Source Contributions**
 
 The folder structure has to be the same as the other esp_lcd_x display panel drivers.
